@@ -1,0 +1,77 @@
+name: Maven Commons Lib Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      # Paso para revisar el código
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # Configuramos JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      # Aquí configuramos Maven para que use las credenciales de GitHub
+      - name: Set up Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo "<settings><servers><server><id>github</id><username>${{ secrets.USERNAME }}</username><password>${{ secrets.TOKEN }}</password></server></servers></settings>" > ~/.m2/settings.xml
+
+      # Paso para compilar y ejecutar pruebas
+      - name: Build and Test
+        run: mvn clean verify
+
+      # Incrementamos la versión y hacemos push de la nueva etiqueta
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          tag_prefix: ''
+
+      # Actualizamos la versión en el archivo pom.xml con la nueva etiqueta
+      - name: Set new version in pom.xml
+        if: success()
+        run: |
+          NEW_VERSION=${{ steps.tag_version.outputs.new_tag }}
+          echo "Setting new version $NEW_VERSION in pom.xml"
+          mvn versions:set -DnewVersion=$NEW_VERSION
+
+      # Subimos el artefacto al repositorio de GitHub Packages
+      - name: Build and Deploy with Maven
+        if: success()
+        run: |
+          mvn clean deploy -Pproduction
+
+      # Crear una release en GitHub usando la nueva etiqueta
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.TOKEN }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: "Release ${{ steps.tag_version.outputs.new_tag }}"
+          body: ${{ steps.tag_version.outputs.changelog }}
+
+      # Confirmar que el tag ha sido actualizado correctamente en el repositorio
+      - name: Push new version to repository
+        if: success()
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add pom.xml
+          git commit -m "Set version to ${{ steps.tag_version.outputs.new_tag }}"
+          git push origin main
