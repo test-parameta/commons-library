@@ -5,9 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class Utilidades {
 
@@ -34,5 +38,20 @@ public class Utilidades {
     public static <T> T convertJsonToDto(File jsonFile, Class<T> dtoClass) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(jsonFile, dtoClass);
+    }
+
+    public static Date validarFormatoFecha(String fecha) throws ParseException {
+        String regex = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
+
+        Pattern pattern = Pattern.compile(regex);
+
+        if (!pattern.matcher(fecha).matches()) {
+            throw new IllegalArgumentException("El string no cumple con el formato yyyy-MM-dd.");
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+
+        return dateFormat.parse(fecha);
     }
 }
