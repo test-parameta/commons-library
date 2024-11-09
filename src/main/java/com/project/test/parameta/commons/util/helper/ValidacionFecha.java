@@ -4,30 +4,24 @@ import com.project.test.parameta.commons.util.anotations.FechaValidationAnotatio
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import java.util.regex.Pattern;
+
 public class ValidacionFecha implements ConstraintValidator<FechaValidationAnotation, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        try {
-            // Llama a la utilidad para validar el formato de la fecha
-            Utilidades.validarFormatoFecha(value);
-            return true;
-        } catch (IllegalArgumentException e) {
+        String regex = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
+        // Llama a la utilidad para validar el formato de la fecha
+        Pattern pattern = Pattern.compile(regex);
+        if (!pattern.matcher(value).matches()) {
             // Deshabilita el mensaje por defecto
             context.disableDefaultConstraintViolation();
 
             // Usa el mensaje de la excepción como parte del mensaje dinámico
             context.buildConstraintViolationWithTemplate(
-                    "Error en la fecha ingresada: " + e.getMessage()
-            ).addConstraintViolation();
-
-            return false;
-        } catch (Exception e) {
-            // Captura otras excepciones, si las hay
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    "La fecha ingresada no es válida debido a un error inesperado."
+                    "El string no cumple con el formato yyyy-MM-dd."
             ).addConstraintViolation();
             return false;
         }
+        return true;
     }
 }

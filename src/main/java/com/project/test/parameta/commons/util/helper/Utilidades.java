@@ -40,14 +40,8 @@ public class Utilidades {
         return objectMapper.readValue(jsonFile, dtoClass);
     }
 
+
     public static Date validarFormatoFecha(String fecha) throws ParseException {
-        String regex = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
-
-        Pattern pattern = Pattern.compile(regex);
-
-        if (!pattern.matcher(fecha).matches()) {
-            throw new IllegalArgumentException("El string no cumple con el formato yyyy-MM-dd.");
-        }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
