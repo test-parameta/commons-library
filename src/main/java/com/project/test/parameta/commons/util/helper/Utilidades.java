@@ -1,7 +1,11 @@
 package com.project.test.parameta.commons.util.helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.xml.bind.JAXBElement;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -34,6 +38,35 @@ public class Utilidades {
         } catch (Exception e) {
             throw new IllegalArgumentException("Error de conversión de tipos: " + e.getMessage(), e);
         }
+    }
+
+    public static <T> JAXBElement<T> createJaxbElement(T object, Class<T> clazz) {
+        return new JAXBElement<>(new QName(clazz.getSimpleName()), clazz, object);
+    }
+
+    public static XMLGregorianCalendar convertToXMLGregorianCalendar(Date date) {
+        try {
+            if (date == null) {
+                return null; // Maneja el caso en el que la fecha sea nula
+            }
+
+            // Convierte Date a GregorianCalendar
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+
+            // Convierte GregorianCalendar a XMLGregorianCalendar
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Maneja excepciones devolviendo null
+        }
+    }
+
+    public  static Date gregorianToDate(XMLGregorianCalendar fecha){
+        if (fecha == null) {
+            return null;
+        }
+        return fecha.toGregorianCalendar().getTime();
     }
 
     public static String generarCodigo(){

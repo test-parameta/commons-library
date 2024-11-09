@@ -20,7 +20,7 @@ public class EmpleadoSeguridadDTO extends EmpleadoDTO implements UserDetails {
                 empleadoDTO.getApellidosEmpleado(),
                 empleadoDTO.getNumeroDocumentoEmpleado(),
                 empleadoDTO.getFechaNacimientoEmpleado(),
-                empleadoDTO.getFechaVinculacionEmpleado(),
+                empleadoDTO.getFechaVinculacionCompaniaEmpleado(),
                 empleadoDTO.getCargoFk(),
                 empleadoDTO.getTipoDocumentoFk(),
                 empleadoDTO.getCorreoEmpleado(),

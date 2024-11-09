@@ -25,7 +25,7 @@ public class EmpleadoDTO {
 
     private Date fechaNacimientoEmpleado;
 
-    private Date fechaVinculacionEmpleado;
+    private Date fechaVinculacionCompaniaEmpleado;
 
     private CargoDTO cargoFk;
 
