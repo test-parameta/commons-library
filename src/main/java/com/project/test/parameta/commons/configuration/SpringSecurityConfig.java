@@ -33,6 +33,7 @@ public class SpringSecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/v3/api-docs/**",
+                                        "/doc/swagger-ui/***",
                                         "/empleado/**"
                                 ).permitAll()
                                 .anyRequest().authenticated()
