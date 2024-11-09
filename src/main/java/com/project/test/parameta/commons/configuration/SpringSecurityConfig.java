@@ -33,9 +33,7 @@ public class SpringSecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/v3/api-docs/**",
-                                        "/doc/**",
-                                        "/profesor/**",
-                                        "/estudiante/**"
+                                        "/empleado/**"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 ).sessionManagement(sessionManager ->
