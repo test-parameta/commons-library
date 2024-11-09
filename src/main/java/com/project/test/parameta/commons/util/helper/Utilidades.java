@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Utilidades {
@@ -39,6 +36,9 @@ public class Utilidades {
         }
     }
 
+    public static String generarCodigo(){
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 5).toUpperCase();
+    }
 
     public static <T> T convertJsonToDto(File jsonFile, Class<T> dtoClass) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
