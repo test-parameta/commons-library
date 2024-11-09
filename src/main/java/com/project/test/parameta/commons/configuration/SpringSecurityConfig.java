@@ -34,7 +34,8 @@ public class SpringSecurityConfig {
                         auth
                                 .requestMatchers("/v3/api-docs/**",
                                         "/doc/swagger-ui/***",
-                                        "/empleado/**"
+                                        "/empleado/**",
+                                        "/ws/**"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 ).sessionManagement(sessionManager ->
