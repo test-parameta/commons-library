@@ -26,6 +26,11 @@ public class Utilidades {
                 case "String" -> Optional.of(clazz.cast(String.valueOf(obj)));
                 case "Integer" -> Optional.of(clazz.cast(Integer.valueOf(obj.toString())));
                 case "Double" -> Optional.of(clazz.cast(Double.valueOf(obj.toString())));
+                case "Date" -> {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    dateFormat.setLenient(false);
+                    yield Optional.of(clazz.cast(dateFormat.parse(obj.toString())));
+                }
                 case "BigDecimal" -> Optional.of(clazz.cast(BigDecimal.valueOf(Double.parseDouble(obj.toString()))));
                 default -> Optional.empty();
             };
@@ -38,14 +43,5 @@ public class Utilidades {
     public static <T> T convertJsonToDto(File jsonFile, Class<T> dtoClass) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(jsonFile, dtoClass);
-    }
-
-
-    public static Date validarFormatoFecha(String fecha) throws ParseException {
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-
-        return dateFormat.parse(fecha);
     }
 }
