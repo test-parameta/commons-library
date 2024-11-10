@@ -73,8 +73,7 @@ public class Utilidades {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 5).toUpperCase();
     }
 
-    public static String dateToString(){
-        Date date = new Date();
+    public static String dateToString(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(date);
     }
