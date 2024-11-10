@@ -14,7 +14,7 @@ public class ValidacionTipoDocumento implements ConstraintValidator<TipoDocument
         StringBuilder texto = new StringBuilder();
         texto.append("El tipo de documento ingresado no es valido, coloca alguno de los disponibles: ");
         for(TipoDocumentoEnum tipoDocumento: TipoDocumentoEnum.values()){
-            texto.append(tipoDocumento.name()).append("-").append(tipoDocumento.getDescripcion()).append("\n");
+            texto.append(tipoDocumento.name()).append("-").append(tipoDocumento.getDescripcion()).append(", ");
         }
         context.disableDefaultConstraintViolation();
 

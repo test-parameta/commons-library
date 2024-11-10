@@ -73,6 +73,12 @@ public class Utilidades {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 5).toUpperCase();
     }
 
+    public static String dateToString(){
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(date);
+    }
+
     public static <T> T convertJsonToDto(File jsonFile, Class<T> dtoClass) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(jsonFile, dtoClass);

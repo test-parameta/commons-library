@@ -14,7 +14,7 @@ public class ValidacionCargo implements ConstraintValidator<CargoValidartionAnno
         StringBuilder texto = new StringBuilder();
         texto.append("El cargo ingresado no es valido, coloca alguno de los disponibles: ");
         for(CargoEnum cargo : CargoEnum.values()){
-            texto.append(cargo.name()).append("-").append(cargo.getDescripcion()).append("\n");
+            texto.append(cargo.name()).append("-").append(cargo.getDescripcion()).append(", ");
         }
         context.disableDefaultConstraintViolation();
 
