@@ -9,6 +9,13 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 import java.util.Date;
 
+/**
+ * DTO para representar la información de un empleado.
+ * <p>
+ * Contiene los datos generales del empleado, incluyendo identificadores,
+ * información personal, detalles de empleo y credenciales.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

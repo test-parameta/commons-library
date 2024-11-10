@@ -14,38 +14,74 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.project.test.parameta.commons.util.constants.Constantes.*;
+
+/**
+ * Configuración de seguridad para la aplicación utilizando Spring Security.
+ * <p>
+ * Define las políticas de seguridad, manejo de excepciones, y autenticación basada en tokens JWT.
+ * </p>
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SpringSecurityConfig {
 
+    /**
+     * Filtro para autenticar solicitudes basadas en JWT.
+     */
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
+    /**
+     * Proveedor de autenticación personalizado.
+     */
     private final AuthenticationProvider authenticationProvider;
 
+    /**
+     * Manejador para excepciones de autenticación no autorizada.
+     */
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    /**
+     * Manejador para excepciones de acceso denegado.
+     */
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
-    /*
-     * Filtros para los request para los permisos de acceso o usuo de endpoints del back
-     * */
+
+    /**
+     * Configura la cadena de filtros de seguridad.
+     * <p>
+     * Define las políticas de seguridad para las solicitudes HTTP, como la deshabilitación de CSRF,
+     * la configuración de rutas permitidas, y la autenticación para otras solicitudes. También configura
+     * el manejo de excepciones y el uso de un proveedor de autenticación y filtros personalizados.
+     * </p>
+     *
+     * @param http el objeto {@link HttpSecurity} utilizado para configurar la seguridad.
+     * @return el bean de {@link SecurityFilterChain} con la configuración de seguridad.
+     * @throws Exception si ocurre algún error durante la configuración de seguridad.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth ->
+        return http.csrf(AbstractHttpConfigurer::disable) // Deshabilita CSRF
+                .authorizeHttpRequests(auth -> // Configura permisos para las solicitudes HTTP
                         auth
-                                .requestMatchers("/v3/api-docs/**",
-                                        "/doc/swagger-ui/***",
-                                        "/empleado/**",
-                                        "/ws/**"
+                                .requestMatchers(
+                                        V3_API_DOCS_PATH, // Permite acceso público a la documentación de API
+                                        SWAGGER_UI_PATH, // Permite acceso público a Swagger UI
+                                        EMPLEADO_PATH, // Permite acceso público a rutas relacionadas con empleados
+                                        WS_PATH // Permite acceso público a rutas relacionadas con servicios web SOAP
                                 ).permitAll()
-                                .anyRequest().authenticated()
-                ).sessionManagement(sessionManager ->
+                                .anyRequest().authenticated() // Requiere autenticación para otras solicitudes
+                )
+                .sessionManagement(sessionManager -> // Configura sesiones como stateless
                         sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .exceptionHandling(
-                        handling -> handling.authenticationEntryPoint(customAuthenticationEntryPoint).accessDeniedHandler(customAccessDeniedHandler)
+                .exceptionHandling(handling -> // Configura manejadores de excepciones personalizadas
+                        handling
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler)
                 )
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider) // Configura el proveedor de autenticación
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Agrega el filtro JWT antes del filtro de autenticación
                 .build();
     }
 }

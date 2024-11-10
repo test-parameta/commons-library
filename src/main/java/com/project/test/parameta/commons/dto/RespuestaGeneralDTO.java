@@ -8,6 +8,13 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
+/**
+ * DTO para representar una respuesta general en la aplicación.
+ * <p>
+ * Esta clase se utiliza para encapsular información estándar en las respuestas
+ * de las APIs, incluyendo el estado HTTP, un mensaje, y datos adicionales.
+ * </p>
+ */
 @Data
 @Builder
 @NoArgsConstructor
