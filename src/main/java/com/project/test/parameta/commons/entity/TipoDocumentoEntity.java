@@ -1,5 +1,6 @@
 package com.project.test.parameta.commons.entity;
 
+import com.project.test.parameta.commons.util.enums.TipoDocumentoEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class TipoDocumentoEntity {
     private Integer idTipoDocumento;
 
     @Column(name = "nombre_tipo_documento", nullable = false, length = 50)
-    private String nombreTipoDocumento;
+    @Enumerated(EnumType.STRING)
+    private TipoDocumentoEnum nombreTipoDocumento;
 
 }

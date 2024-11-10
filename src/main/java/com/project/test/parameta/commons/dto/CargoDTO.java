@@ -1,5 +1,7 @@
 package com.project.test.parameta.commons.dto;
 
+import com.project.test.parameta.commons.util.enums.CargoEnum;
+import com.project.test.parameta.commons.util.enums.TipoDocumentoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +16,5 @@ public class CargoDTO {
 
     private Integer idCargo;
 
-    private String nombreCargo;
+    private CargoEnum nombreCargo;
 }
