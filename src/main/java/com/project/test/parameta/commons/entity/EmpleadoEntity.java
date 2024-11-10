@@ -36,7 +36,7 @@ public class EmpleadoEntity {
     @Column(name = "fecha_vinculacion_compania_empleado", nullable = false)
     private Date fechaVinculacionCompaniaEmpleado;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "cargo_fk", nullable = false)
     private CargoEntity cargoFk;
 
