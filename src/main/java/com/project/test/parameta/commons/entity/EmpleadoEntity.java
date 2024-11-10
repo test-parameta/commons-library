@@ -23,7 +23,7 @@ public class EmpleadoEntity {
     @Column(name = "apellidos_empleado", nullable = false, length = 50)
     private String apellidosEmpleado;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "tipo_documento_fk", nullable = false)
     private TipoDocumentoEntity tipoDocumentoFk;
 
